@@ -48,8 +48,8 @@ pip install scrapperAmazon
 ### Option 3: Install from requirements.txt
 
 ```bash
-git clone https://github.com/yourusername/scrapperAmazon.git
-cd scrapperAmazon
+git clone https://github.com/amen-hadded/scrapperamazon.git
+cd scrapperamazon
 
 # Create virtual environment (optional but recommended)
 python -m venv venv
@@ -66,110 +66,84 @@ pip install -e .
 
 ### Basic Usage
 
-```bash
-# Simple search
-scrapperAmazon scrape -q "laptop"
-
-# Search with country specification
-scrapperAmazon scrape -q "bicycle" -c US
-
-# Search with multiple filters
-scrapperAmazon scrape -q "headphones" --min-price 50 --max-price 200 --min-rating 4.0
-```
-
-### Available Commands
+Run the interactive CLI:
 
 ```bash
-# Show help
-scrapperAmazon --help
+# Launch interactive mode
+python -m scrapperamazon.cli
 
-# List supported countries
-scrapperAmazon list-countries
-
-# Show version
-scrapperAmazon version
+# Or using the installed command (if PATH is configured)
+scrapperAmazon
 ```
+
+The tool will guide you through:
+
+1. Select your Amazon region (15 countries available)
+2. Enter search query
+3. Choose collection mode (items, pages, range, all, or default)
+4. Apply optional filters (duplicates, similar products, price, rating, terms)
+5. View results and save to CSV
 
 ## Usage Examples 📚
 
-### 1. Basic Search
+### 1. Interactive Mode (Recommended)
 
 ```bash
-scrapperAmazon scrape -q "laptop"
+python -m scrapperamazon.cli
 ```
 
-Scrapes up to 20 products (default) matching "laptop" from your detected country's Amazon site.
+The tool launches with a beautiful interactive menu:
 
-### 2. Search in Specific Country
+- Select country from 15 Amazon domains
+- Enter your search query
+- Choose how many products to collect
+- Apply filters (price, rating, duplicates, etc.)
+- View results with colors and emojis
+- Save to CSV
 
-```bash
-scrapperAmazon scrape -q "gaming mouse" -c US
+### 2. Using as Python Library
+
+```python
+from scrapperamazon import AmazonScraperSelenium, remove_duplicates, filter_by_price_range
+
+# Create scraper
+scraper = AmazonScraperSelenium(amazon_site="https://amazon.com")
+
+# Scrape products
+products = scraper.scrape_amazon("laptop", max_results=20)
+
+# Apply filters
+products = remove_duplicates(products)
+products = filter_by_price_range(products, min_price=500, max_price=1500)
+
+# Save to CSV
+scraper.save_csv(products, "laptops.csv")
 ```
 
-Searches on Amazon.com (United States)
+### 3. Advanced Python Usage
 
-### 3. Collect Multiple Pages
+```python
+from scrapperamazon import AmazonScraperSelenium
+from scrapperamazon import (
+    remove_duplicates,
+    remove_similar_duplicates,
+    filter_by_search_term,
+    filter_by_price_range,
+    filter_by_rating
+)
 
-```bash
-scrapperAmazon scrape -q "monitor" -c DE --pages 3
-```
+# Multi-page scraping with all filters
+scraper = AmazonScraperSelenium(amazon_site="https://amazon.de")
+products = scraper.scrape_amazon("headphones", max_results=100, collect_all_pages=True)
 
-Collects products from pages 1-3 on Amazon.de (Germany)
+# Clean and filter
+products = remove_duplicates(products)
+products = remove_similar_duplicates(products, threshold=0.85)
+products = filter_by_price_range(products, min_price=30, max_price=200)
+products = filter_by_rating(products, min_rating=4.0)
 
-### 4. Large-Scale Collection
-
-```bash
-scrapperAmazon scrape -q "smartphone" -c UK -m 100
-```
-
-Collects up to 100 products from Amazon.co.uk
-
-### 5. Price Range Filtering
-
-```bash
-scrapperAmazon scrape -q "headphones" --min-price 50 --max-price 300
-```
-
-Filters results to show only products between €50 and €300
-
-### 6. Rating-Based Filtering
-
-```bash
-scrapperAmazon scrape -q "keyboard" --min-rating 4.5
-```
-
-Shows only products with 4.5+ stars
-
-### 7. Remove Duplicates
-
-```bash
-scrapperAmazon scrape -q "laptop" --remove-duplicates --remove-similar
-```
-
-Removes exact duplicates and similar products
-
-### 8. Custom Output File
-
-```bash
-scrapperAmazon scrape -q "camera" -o results/cameras_2024.csv
-```
-
-Saves results to a custom location
-
-### 9. Complex Search with All Filters
-
-```bash
-scrapperAmazon scrape \
-  -q "wireless speaker" \
-  -c FR \
-  --max-results 50 \
-  --pages 2 \
-  --min-price 30 \
-  --max-price 200 \
-  --min-rating 4.0 \
-  --remove-duplicates \
-  --remove-similar \
-  -o output/speakers.csv
+scraper.save_csv(products, "results/headphones_filtered.csv")
+scraper.close()
 ```
 
 ## Supported Countries 🌐
@@ -200,26 +174,38 @@ List all supported countries:
 scrapperAmazon list-countries
 ```
 
-## CLI Options Reference 📖
+## Interactive CLI Guide 📖
 
-```bash
-scrapperAmazon scrape [OPTIONS]
+When you run `python -m scrapperamazon.cli`, you'll see:
 
-OPTIONS:
-  -q, --query TEXT              Search query (REQUIRED)
-  -c, --country CODE            Country code (auto-detect if not set)
-  -m, --max-results INTEGER     Max products to collect (default: 20)
-  -p, --pages INTEGER           Number of pages to scrape (1-7)
-  -o, --output PATH             Output CSV filename (default: amazon_results.csv)
-  --min-price FLOAT             Minimum price filter
-  --max-price FLOAT             Maximum price filter
-  --min-rating FLOAT            Minimum rating (e.g., 4.0)
-  --remove-duplicates           Remove exact duplicates
-  --remove-similar              Remove similar products
-  --filter-term TEXT            Filter by specific term in title
-  -v, --verbose                 Enable verbose logging
-  --help                        Show help message
 ```
+██████╗ ███╗   ███╗███████╗████╗
+██╔════╝ ████╗ ████║██╔════╝██╔╝
+██║█████╗██╔████╔██║███████╗██║
+██║╚════╝██║╚██╔╝██║╚════██║██║
+╚█████╗ ██║ ╚═╝ ██║███████║████╗
+ ╚════╝ ╚═╝     ╚═╝╚══════╝╚═══╝
+
+Amazon Product Scraper ✓ PRO
+```
+
+### Steps:
+
+1. **Select Country** - Choose from 15 Amazon domains
+2. **Search Query** - Enter your search term (e.g., "laptop", "headphones")
+3. **Collection Mode** - Choose how to collect:
+   - `1`: Collect N items (you specify number)
+   - `2`: Scrape N pages (1-7 pages)
+   - `3`: Collect from page range (e.g., pages 1-3)
+   - `4`: Collect all products (pages 1-7)
+   - `5`: Use default (20 items)
+4. **Apply Filters** (optional):
+   - Remove duplicate products
+   - Remove similar products (>85% similarity)
+   - Filter by search term in title
+   - Filter by price range (min-max)
+   - Filter by minimum rating (stars)
+5. **View & Save** - Results display with emojis and colors, then save to CSV
 
 ## Output Format 📊
 
@@ -237,8 +223,8 @@ B000ABC124,Great Item,34.50 €,4.2,https://amazon.fr/...
 ### Clone and Setup
 
 ```bash
-git clone https://github.com/yourusername/scrapperAmazon.git
-cd scrapperAmazon
+git clone https://github.com/amen-hadded/scrapperamazon.git
+cd scrapperamazon
 
 # Create virtual environment
 python -m venv venv
@@ -250,7 +236,7 @@ venv\Scripts\activate
 source venv/bin/activate
 
 # Install in development mode with all dependencies
-pip install -e ".[dev]"
+pip install -e .
 ```
 
 ### Project Structure
@@ -343,9 +329,10 @@ The authors assume no responsibility for misuse or damage caused by this tool.
 
 ## Support & Contact 💬
 
-- 📧 Email: your.email@example.com
-- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/scrapperAmazon/issues)
-- 💭 Discussions: [GitHub Discussions](https://github.com/yourusername/scrapperAmazon/discussions)
+- 📧 Email: amenallahhadde6@gmail.com
+- 🐛 Issues: [GitHub Issues](https://github.com/amen-hadded/scrapperamazon/issues)
+- 💭 Discussions: [GitHub Discussions](https://github.com/amen-hadded/scrapperamazon/discussions)
+- 🏠 Repository: [github.com/amen-hadded/scrapperamazon](https://github.com/amen-hadded/scrapperamazon)
 
 ## Changelog 📝
 
@@ -366,6 +353,8 @@ The authors assume no responsibility for misuse or damage caused by this tool.
 
 ---
 
-**Made with ❤️ by Your Name**
+**Made with ❤️ by Amen Allah Hadded**
+
+📧 Questions? Email: amenallahhadde6@gmail.com
 
 ⭐ If you find this project useful, please consider starring it on GitHub!
