@@ -1,0 +1,13 @@
+# Core dependencies
+selenium>=4.0.0
+webdriver-manager>=4.0.0
+parsel>=1.7.0
+requests>=2.28.0
+click>=8.0.0
+
+# Development dependencies (optional)
+# pytest>=7.0.0
+# pytest-cov>=3.0.0
+# black>=22.0.0
+# flake8>=4.0.0
+# mypy>=0.950
