@@ -336,7 +336,7 @@ The authors assume no responsibility for misuse or damage caused by this tool.
 
 ## Changelog 📝
 
-### Version 1.0.0 (2024)
+### Version 1.0.0 (2026)
 
 - Initial release
 - Multi-country support
