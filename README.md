@@ -5,6 +5,8 @@ A powerful, easy-to-use CLI tool to scrape Amazon products across multiple count
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
+<img width="910" height="831" alt="image" src="https://github.com/user-attachments/assets/c5509cc1-5e36-4629-a732-d6fa3dad00f7" />
+
 
 ## Features ✨
 
