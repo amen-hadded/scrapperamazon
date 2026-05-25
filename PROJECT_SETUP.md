@@ -137,14 +137,29 @@ pip install -e .
 
 ### Basic Usage
 
+**Interactive Mode (Recommended - Works on all systems):**
+
 ```bash
-scrapperAmazon scrape -q "laptop"
+python -m scrapperamazon.cli
 ```
 
-### List Options
+This launches the interactive menu where you select:
+
+- Country (15 options or auto-detect)
+- Search term
+- Collection mode (items/pages/range/all)
+- Filtering options
+
+**Direct Command (Windows: add Scripts folder to PATH first):**
 
 ```bash
-scrapperAmazon scrape --help
+scrapperAmazon scrape -q "laptop" -m 5
+```
+
+### Python Module Usage
+
+```bash
+python -m scrapperamazon.cli --help
 ```
 
 ### Python Library
@@ -153,6 +168,7 @@ scrapperAmazon scrape --help
 from scrapperamazon import AmazonScraperSelenium
 scraper = AmazonScraperSelenium()
 products = scraper.scrape_amazon("laptop", max_results=20)
+print(products)
 ```
 
 ## 🔄 Deployment Workflow
@@ -161,8 +177,9 @@ products = scraper.scrape_amazon("laptop", max_results=20)
 
    ```bash
    git clone <repo>
+   cd scrapperAmazon
    pip install -e .
-   python examples/example_1_basic.py
+   python -m scrapperamazon.cli
    ```
 
 2. **Push to GitHub**

@@ -2,45 +2,64 @@
 
 This directory contains practical examples of how to use scrapperAmazon both as a CLI tool and as a Python library.
 
-## CLI Examples
+## Interactive CLI Usage
 
-### Basic Usage
-
-```bash
-scrapperAmazon scrape -q "laptop"
-```
-
-### Search in Specific Country
+Launch the interactive CLI interface:
 
 ```bash
-scrapperAmazon scrape -q "gaming mouse" -c US
+python -m scrapperamazon.cli
 ```
 
-### Collect Multiple Pages
+This will guide you through an interactive session where you:
 
-```bash
-scrapperAmazon scrape -q "monitor" -c DE --pages 3
+1. **Select Country** - Choose from 15 Amazon domains or auto-detect by IP
+2. **Enter Search Query** - Type what you're looking for
+3. **Choose Collection Mode** - Select how many items/pages to collect
+4. **Apply Filters** - Optionally filter by price, rating, duplicates, etc.
+5. **View Results** - See all products with prices and links
+6. **Save to CSV** - Export results for analysis
+
+### Example Interactive Session
+
+```
+$ python -m scrapperamazon.cli
+
+    ███████╗ ██████╗ ██████╗  █████╗ ██████╗ ██████╗ ███████╗██████╗
+    ██╔════╝██╔════╝██╔════╝ ██╔══██╗██╔══██╗██╔══██╗██╔════╝██╔══██╗
+    ...
+
+Available Amazon sites:
+  ● 1. [FR] amazon.fr
+  ● 2. [DE] amazon.de
+  ... (15 options)
+  ● 0. Automatic detection by IP
+
+➤ Choose a site: 0
+📍 Auto-detecting country by IP...
+✓ Selected: amazon.fr
+
+➤ Enter search term: laptop
+
+📦 Collection Mode:
+  1. Specific number of items
+  2. Specific number of pages
+  3. Range of pages
+  4. All available products
+  5. Default (5 pages)
+
+➤ Choose mode: 1
+➤ How many items? 10
+
+🚀 Starting scrape...
+✓ Collected 10 products
+
+💾 Save to CSV? (y/n): y
+✓ Saved to: products.csv
 ```
 
-### Apply Filters
+## Python Library Examples (Advanced)
 
-```bash
-scrapperAmazon scrape -q "headphones" --min-price 50 --max-price 200 --min-rating 4.0
-```
-
-### Remove Duplicates
-
-```bash
-scrapperAmazon scrape -q "laptop" --remove-duplicates --remove-similar
-```
-
-### Save to Custom Location
-
-```bash
-scrapperAmazon scrape -q "camera" -o output/cameras.csv
-```
-
-## Python Library Examples
+If you want to use scrapperAmazon as a Python library in your own code:
 
 All examples can be run directly:
 
