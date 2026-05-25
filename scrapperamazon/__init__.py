@@ -7,10 +7,20 @@ __version__ = "1.0.0"
 __author__ = "Your Name"
 __license__ = "MIT"
 
-from .core import AmazonScraperSelenium, remove_duplicates, filter_by_search_term
+from .core import (
+    AmazonScraperSelenium,
+    remove_duplicates,
+    remove_similar_duplicates,
+    filter_by_search_term,
+    filter_by_price_range,
+    filter_by_rating,
+)
 
 __all__ = [
     "AmazonScraperSelenium",
     "remove_duplicates",
+    "remove_similar_duplicates",
     "filter_by_search_term",
+    "filter_by_price_range",
+    "filter_by_rating",
 ]
